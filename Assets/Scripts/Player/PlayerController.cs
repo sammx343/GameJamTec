@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     {
 	    horizontalMovement = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-	    if (Input.GetButton("Jump"))
+	    if (Input.GetButtonDown("Jump"))
 	    {
 		    CharacterController2D.StartJump();
 	    }
