@@ -9,10 +9,11 @@ public class PlayerController : MonoBehaviour
     public CharacterController2D CharacterController2D;
     public float runSpeed = 40f;
     float horizontalMovement = 0f;
+
     bool jump = false;
+    bool stoppedJump = false;
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -20,16 +21,19 @@ public class PlayerController : MonoBehaviour
     {
 	    horizontalMovement = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-	    if (Input.GetButtonDown("Jump"))
+	    if (Input.GetButton("Jump"))
 	    {
-		    Debug.Log("IsJumping");
-		    jump = true;
+		    CharacterController2D.StartJump();
+	    }
+
+	    if (Input.GetButtonUp("Jump"))
+	    {
+		    CharacterController2D.StopJump();
 	    }
     }
 
     private void FixedUpdate()
     {
-	    CharacterController2D.Move(horizontalMovement * Time.fixedDeltaTime, false, jump);
-	    jump = false;
+	    CharacterController2D.Move(horizontalMovement * Time.fixedDeltaTime, false, jump, stoppedJump);
     }
 }
