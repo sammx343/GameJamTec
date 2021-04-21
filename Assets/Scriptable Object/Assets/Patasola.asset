@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1233d608c7920254297589a9db0aac66, type: 3}
+  m_Name: Patasola
+  m_EditorClassIdentifier: 
+  monsterIntro: {fileID: 7649521838067186081, guid: da27114167805d6408513fee5fbcb691,
+    type: 3}
+  monsterSound: {fileID: 3051000406752717084, guid: e645b05fb9c958746be32f66ddc7a291,
+    type: 3}
+  heartSound: {fileID: 5934979580468895605, guid: 4408c9b0cc367894ba398bd3b786601d,
+    type: 3}

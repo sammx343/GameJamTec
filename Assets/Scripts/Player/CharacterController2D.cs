@@ -110,7 +110,6 @@ public class CharacterController2D : MonoBehaviour
 	{
 		if (!m_Grounded  && m_Rigidbody2D.velocity.y > 0)
 		{
-			Debug.Log("Stop jump");
 			m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_Rigidbody2D.velocity.y * 0.5f);
 		}
 	}

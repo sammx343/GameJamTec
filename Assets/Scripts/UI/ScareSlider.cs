@@ -4,73 +4,73 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScareSlider : MonoBehaviour
+namespace UI
 {
-    // Start is called before the first frame update
-    public PlaySoundExample[] monsterAnimationEvents;
-    private PlaySoundExample currentPlaySoundExample;
-    private bool newSoundPlaying = false;
+	public class ScareSlider : MonoBehaviour
+	{
+	    // Start is called before the first frame update
+	    [Header("UI Elements")]
+	    [SerializeField] private Slider slider;
+	    [SerializeField] private TextMeshProUGUI textInstruction;
 
-    [SerializeField] private Slider slider;
-    [SerializeField] private TextMeshProUGUI textInstruction;
+	    [Header("Scriptable Objects")]
+	    [SerializeField] private MonsterUI monsterUi;
 
-    private bool increasedMonsterAudio;
-    private Animator _animator;
-    void Start()
-    {
-	    slider.gameObject.SetActive(false);
-	    textInstruction.gameObject.SetActive(false);
-	    _animator = slider.GetComponent<Animator>();
+	    private Animator _animator;
+	    private bool _increasedMonsterAudio;
+	    private bool _sliderStartPlaying = false;
 
-
-	    foreach (var monsterAnimationEvent in monsterAnimationEvents)
+	    void Start()
 	    {
-		    monsterAnimationEvent.StartedMonsterAudioEvent.AddListener(StartedMonsterAudio);
-		    monsterAnimationEvent.increasedMonsterAudioEvent.AddListener(SliderChangeColor);
-		    monsterAnimationEvent.stoppedMonsterAudioEvent.AddListener(ResetSlider);
+		    slider.gameObject.SetActive(false);
+		    textInstruction.gameObject.SetActive(false);
+		    _animator = slider.GetComponent<Animator>();
+
+		    monsterUi.scareEventStarted = new ScareEventStart();
+
+		    monsterUi.scareEventStarted.AddListener(StartedMonsterAudio);
+		    monsterUi.scareEventEnded.AddListener(ResetSlider);
+		    monsterUi.monsterAttack.AddListener(SliderChangeColor);
 	    }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-	    if (newSoundPlaying)
+	    // Update is called once per frame
+	    void Update()
 	    {
-		    if (currentPlaySoundExample.monsterSoundIsPlaying && currentPlaySoundExample != null)
+		    if (_sliderStartPlaying)
 		    {
-			    slider.value = currentPlaySoundExample.monsterSoundSource.time;
+			    slider.value += Time.deltaTime;
 		    }
 	    }
-    }
 
-    void StartedMonsterAudio(PlaySoundExample playSoundExample)
-    {
-	    newSoundPlaying = true;
-	    currentPlaySoundExample = playSoundExample;
-	    slider.minValue = 0;
-	    slider.maxValue = currentPlaySoundExample.monsterSoundSource.clip.length;
+	    void StartedMonsterAudio(float sliderMaxValue)
+	    {
+		    _sliderStartPlaying = true;
 
-	    slider.gameObject.SetActive(true);
-	    _animator.Play("Appear");
-    }
+		    slider.minValue = 0;
+		    slider.maxValue = sliderMaxValue;
 
-    void SliderChangeColor()
-    {
-	    Debug.Log("CHANGE COLOR");
-	    textInstruction.gameObject.SetActive(true);
-	    _animator.Play("IncreasedVolume");
-    }
+		    slider.gameObject.SetActive(true);
+		    _animator.Play("Appear");
+	    }
 
-    void ResetSlider()
-    {
-	    newSoundPlaying = false;
-	    _animator.Play("Dissapear");
-    }
+	    void SliderChangeColor()
+	    {
+		    textInstruction.gameObject.SetActive(true);
+		    _animator.Play("IncreasedVolume");
+	    }
 
-    public void SliderDissapear()
-    {
-	    slider.gameObject.SetActive(false);
-	    textInstruction.gameObject.SetActive(false);
-    }
+	    void ResetSlider()
+	    {
+		    _sliderStartPlaying = false;
+		    _animator.Play("Disappear");
+	    }
 
+	    public void SliderDisappear()
+	    {
+		    slider.gameObject.SetActive(false);
+		    textInstruction.gameObject.SetActive(false);
+
+		    slider.value = 0;
+	    }
+	}
 }
